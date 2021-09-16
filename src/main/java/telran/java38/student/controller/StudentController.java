@@ -1,5 +1,6 @@
 package telran.java38.student.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import telran.java38.student.dto.ScoreExamDto;
@@ -42,8 +44,8 @@ public class StudentController {
 	}
 	
 	@PutMapping ("/student/{id}")
-	public StudentBaseDto	updateStudent(@PathVariable Integer id, @RequestBody StudentUpdateDto studentUpdateDto ) {
-		return studentService.updateStudent(id, studentUpdateDto);
+	public StudentBaseDto	updateStudent(@PathVariable Integer id, @RequestBody StudentUpdateDto studentUpdateDto, @RequestHeader ("Autorization") String token) throws UnsupportedEncodingException {
+		return studentService.updateStudent(id, studentUpdateDto, token);
 		
 	}
 	
