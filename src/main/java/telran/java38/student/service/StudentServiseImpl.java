@@ -56,11 +56,7 @@ public class StudentServiseImpl implements StudentService {
 	}
 
 	@Override
-	public StudentBaseDto updateStudent(Integer id, StudentUpdateDto studentUpdateDto, String token) throws UnsupportedEncodingException {
-		if (!authorizationСheck(token)) {
-			//FIX ME*************************************************************************
-			return null;	
-		}
+	public StudentBaseDto updateStudent(Integer id, StudentUpdateDto studentUpdateDto) {
 		Student student = studentRepository.findById(id)
 				.orElseThrow(() -> new StudentNotFoundException(id));	
 				
@@ -70,28 +66,11 @@ public class StudentServiseImpl implements StudentService {
 		if (studentUpdateDto.getPassword() != null) {
 			student.setPassword(studentUpdateDto.getPassword());			
 		}	
-		studentRepository.deleteById(id);
 		studentRepository.save(student);
 		return convertToStudentBaseDto(student);
 	}
 
 	
-	private boolean authorizationСheck(String token) throws UnsupportedEncodingException {
-		byte[] autorization = Base64.getDecoder().decode(token);
-		String autorizationString = new String(autorization, "utf-8");
-		String[] autorizationStrings = autorizationString.split(":");
-		if (autorizationStrings.length != 2) {
-			return false;			
-		}
-		Integer id = Integer.parseInt(autorizationStrings[0]);
-		Student student = studentRepository.findById(id)
-				.orElseThrow(() -> new StudentNotFoundException(id));
-		if (student.getPassword().equals(autorizationStrings[1])) {
-			return true;			
-		}				
-		return false;
-	}
-
 	private StudentBaseDto convertToStudentBaseDto(Student student) {
 		
 		return StudentBaseDto.builder()

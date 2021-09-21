@@ -18,6 +18,7 @@ import telran.java38.student.dto.StudentBaseDto;
 import telran.java38.student.dto.StudentDto;
 import telran.java38.student.dto.StudentUpdateDto;
 import telran.java38.student.service.StudentService;
+import telran.java38.student.service.security.StudentSecurityService;
 
 
 
@@ -27,6 +28,11 @@ public class StudentController {
 	
 	@Autowired
 	StudentService studentService;
+
+	@Autowired
+	StudentSecurityService securityService;
+	
+	
 	
 	@PostMapping("/student")
 	public boolean addStudent(@RequestBody StudentBaseDto studentCreateDto) {
@@ -44,12 +50,9 @@ public class StudentController {
 	}
 	
 	@PutMapping ("/student/{id}")
-	public StudentBaseDto	updateStudent(@PathVariable Integer id, @RequestBody StudentUpdateDto studentUpdateDto, @RequestHeader ("Autorization") String token) throws UnsupportedEncodingException {
-		if (token == null) {
-			return null;
-			
-		}
-		return studentService.updateStudent(id, studentUpdateDto, token);
+	public StudentBaseDto	updateStudent(@PathVariable Integer id, @RequestBody StudentUpdateDto studentUpdateDto, @RequestHeader ("Authorization") String token) throws UnsupportedEncodingException {
+		securityService.updateStudentValidate(id, token);		
+		return studentService.updateStudent(id, studentUpdateDto);
 		
 	}
 	
