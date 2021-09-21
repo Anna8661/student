@@ -13,6 +13,7 @@ import telran.java38.student.model.Student;
 
 @Service
 public class StudentSecurityService {
+	
 	@Autowired
 	StudentMongoRepository studentRepositoty;
 	
