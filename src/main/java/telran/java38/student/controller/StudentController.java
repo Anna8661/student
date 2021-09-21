@@ -50,7 +50,8 @@ public class StudentController {
 	}
 	
 	@PutMapping ("/student/{id}")
-	public StudentBaseDto	updateStudent(@PathVariable Integer id, @RequestBody StudentUpdateDto studentUpdateDto, @RequestHeader ("Authorization") String token) throws UnsupportedEncodingException {
+	public StudentBaseDto	updateStudent(@PathVariable Integer id, @RequestBody StudentUpdateDto studentUpdateDto, 
+			@RequestHeader ("Authorization") String token) {
 		securityService.updateStudentValidate(id, token);		
 		return studentService.updateStudent(id, studentUpdateDto);
 		

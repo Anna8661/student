@@ -18,6 +18,9 @@ public class StudentSecurityService {
 	
 	public void updateStudentValidate(Integer id, String token) {
 		Credential credential = decodeToken(token);
+		if (!credential.getId().equals(id)) {
+			throw new ForbiddenException();			
+		}
 		Student student = studentRepositoty.findById(credential.getId())
 					.orElseThrow(() -> new AuthException());
 		if (!student.getPassword().equals(credential.getPassword())) {
